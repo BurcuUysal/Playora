@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-image: radial-gradient(ellipse at 12% 8%, rgba(48, 120, 68, 0.12), transparent 36%), radial-gradient(ellipse at 88% 22%, rgba(220, 181, 47, 0.08), transparent 30%);
+    background-attachment: fixed;
+}
+
+/* Cam Efekti (Glassmorphism) */
+.glass-card {
+    background: linear-gradient(135deg, rgba(22, 38, 38, 0.7), rgba(8, 14, 20, 0.92));
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(241, 204, 66, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card:hover {
+    border-color: rgba(85, 207, 114, 0.52);
+    box-shadow: 0 12px 40px -10px rgba(48, 160, 82, 0.24);
+}
+
+.game-card img { filter: saturate(0.82) contrast(1.06); }
+.game-card:hover img { filter: saturate(1) contrast(1.08); }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade {
+    animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.arcade-stage {
+    width: min(100% - 32px, 1120px);
+    margin: 36px auto 72px;
+    color: #eeeaf4;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.arcade-heading,
+.arcade-stats,
+.arcade-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.arcade-heading { margin-bottom: 20px; }
+.arcade-heading h2 { margin: 4px 0; font-size: 28px; font-weight: 800; }
+.arcade-heading p { margin: 0; color: #aaa6b8; font-size: 14px; }
+.arcade-kicker { color: #55cf72; font-size: 11px; font-weight: 800; letter-spacing: 1.2px; }
+.arcade-back { color: #f1cc42; font-size: 13px; text-decoration: none; white-space: nowrap; }
+
+.arcade-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 12px;
+    padding: 14px 18px;
+    border: 1px solid #35434b;
+    border-radius: 10px;
+    background: #101820;
+}
+
+.arcade-stats div { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.arcade-stats span { color: #9995a8; font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+.arcade-stats strong { overflow: hidden; color: #eeeaf4; font-size: 15px; text-overflow: ellipsis; white-space: nowrap; }
+
+.arcade-board {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #35434b;
+    border-radius: 10px;
+    background: #080d13;
+    box-shadow: 0 18px 48px #07050e99;
+}
+
+.arcade-board canvas { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; touch-action: none; }
+.arcade-overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 20px; background: #080d13dd; backdrop-filter: blur(5px); }
+.arcade-overlay.is-hidden { display: none; }
+.arcade-overlay-panel { width: min(100%, 390px); padding: 28px; border: 1px solid #48564d; border-radius: 10px; background: #121c22; text-align: center; }
+.arcade-overlay-panel h3 { margin: 8px 0; font-size: 25px; }
+.arcade-overlay-panel p { margin: 0 0 20px; color: #bbb7c8; font-size: 14px; line-height: 1.6; }
+.arcade-overlay-panel button,
+.arcade-reset,
+.arcade-control {
+    border: 1px solid #e4c13e;
+    border-radius: 6px;
+    background: #e3bc35;
+    color: #12170d;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+}
+.arcade-overlay-panel button { min-height: 46px; padding: 0 20px; }
+.arcade-overlay-panel button:hover, .arcade-reset:hover, .arcade-control:hover { background: #f1cf50; }
+.arcade-controls { min-height: 56px; color: #aaa6b8; font-size: 12px; }
+.arcade-controls > span { flex: 1; }
+#touch-controls { display: flex; align-items: center; gap: 6px; }
+.arcade-control { min-width: 42px; min-height: 40px; padding: 0 10px; touch-action: none; border-color: #438c4e; background: #1c4d2b; color: #e8f5e6; }
+.arcade-reset { min-height: 40px; padding: 0 13px; font-size: 12px; border-color: #43575a; background: #16222a; color: #e7ece4; }
+#touch-controls[hidden] { display: none; }
+.local-score-row { display: flex; justify-content: space-between; gap: 16px; padding: 14px 16px; border-bottom: 1px solid #383545; color: #d9d5e2; }
+.local-score-row strong { color: #f1cc42; }
+
+@media (max-width: 640px) {
+    .arcade-stage { width: min(100% - 20px, 1120px); margin-top: 24px; }
+    .arcade-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+    .arcade-heading h2 { font-size: 23px; }
+    .arcade-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; padding: 12px; }
+    .arcade-stats strong { font-size: 13px; }
+    .arcade-controls { align-items: flex-start; flex-wrap: wrap; gap: 10px; padding: 10px 0; }
+    .arcade-controls > span { flex-basis: 100%; }
+    #touch-controls { order: 2; flex: 1; flex-wrap: wrap; }
+    .arcade-reset { order: 3; }
+    .arcade-control { min-width: 38px; min-height: 38px; }
+}
+
+/* Özel Kaydırma Çubuğu */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #070b10; }
+::-webkit-scrollbar-thumb { background: #9d8122; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #388c4a; }
+
+/* Refined navy, teal, and soft-gold palette */
+body {
+    background-image: radial-gradient(ellipse at 12% 8%, rgba(73, 129, 148, 0.1), transparent 36%), radial-gradient(ellipse at 88% 22%, rgba(185, 166, 111, 0.055), transparent 30%);
+}
+
+.glass-card {
+    background: linear-gradient(135deg, rgba(24, 38, 49, 0.76), rgba(8, 14, 20, 0.94));
+    border-color: rgba(132, 171, 183, 0.16);
+}
+
+.glass-card:hover {
+    border-color: rgba(112, 184, 193, 0.48);
+    box-shadow: 0 12px 40px -10px rgba(63, 126, 145, 0.22);
+}
+
+.game-card img,
+main img { filter: saturate(0.64) contrast(1.04); }
+.game-card:hover img { filter: saturate(0.82) contrast(1.06); }
+header img[alt="Brand logo"] {
+    filter: brightness(0) saturate(100%) invert(80%) sepia(12%) saturate(578%) hue-rotate(145deg) brightness(96%) contrast(88%);
+}
+
+.arcade-kicker { color: #8bbbc3; }
+.arcade-back { color: #c6b77f; }
+.arcade-stats { border-color: #34434c; background: #111923; }
+.arcade-board { border-color: #34434c; background: #090f16; }
+.arcade-overlay { background: #090f16dd; }
+.arcade-overlay-panel { border-color: #3d555d; background: #141d27; }
+.arcade-overlay-panel button,
+.arcade-reset,
+.arcade-control { border-color: #526f7b; background: #365c68; color: #f0f5f5; }
+.arcade-overlay-panel button:hover,
+.arcade-reset:hover,
+.arcade-control:hover { background: #477785; }
+.arcade-control { background: #1b303c; }
+.local-score-row strong { color: #c6b77f; }
+::-webkit-scrollbar-thumb { background: #4e6974; }
+::-webkit-scrollbar-thumb:hover { background: #6e9ca5; }
