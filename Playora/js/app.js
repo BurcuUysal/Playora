@@ -1,166 +1,3 @@
-// PLAYORA - Ana Rota ve Sayfa Yöneticisi
-
-const gamesData = [
-    { id: 'gravity', title: 'Gravity Flip', cat: 'Arcade', diff: 'Orta', desc: 'Yerçekimini ters çevir, uzay engellerini atlat!', icon: '🪐', score: 840 },
-    { id: 'magnet', title: 'Magnet Rush', cat: 'Arcade', diff: 'Zor', desc: 'Manyetik kutupları yönet, mayınlardan kaç.', icon: '🧲', score: 720 },
-    { id: 'mirror', title: 'Mirror Escape', cat: 'Aksiyon', diff: 'Uzman', desc: 'Bölünmüş ekranda iki karakteri aynı anda yönet.', icon: '🪞', score: 950 },
-    { id: 'wind', title: 'Wind Runner', cat: 'Arcade', diff: 'Orta', desc: 'Fırtınalı gökyüzünde rüzgara karşı uç.', icon: '🌪️', score: 680 },
-    { id: 'potion', title: 'Potion Panic', cat: 'Bulmaca', diff: 'Kolay', desc: 'Doğru tarifleri birleştir, iksirleri hazırla.', icon: '🧪', score: 1120 },
-    { id: 'traffic', title: 'Traffic Switch', cat: 'Strateji', diff: 'Zor', desc: 'Kavşaktaki ışıkları kontrol et, kazaları önle.', icon: '🚦', score: 890 },
-    { id: 'detective', title: 'Fake Detective', cat: 'Bulmaca', diff: 'Kolay', desc: 'Değişen detayları fark et, gizemi çöz.', icon: '🕵', score: 760 },
-    { id: 'octo', title: 'Octo Grab', cat: 'Günlük', diff: 'Kolay', desc: 'Sevimli ahtapotla deniz incilerini topla.', icon: '🐙', score: 1040 },
-    { id: 'island', title: 'Island Builder', cat: 'Strateji', diff: 'Orta', desc: 'Kaynakları yönet, adanı sıfırdan inşa et.', icon: '🏝️', score: 920 },
-    { id: 'alien', title: 'Alien Delivery', cat: 'Macera', diff: 'Zor', desc: 'Uzayda paketleri doğru gezegenlere teslim et.', icon: '👽', score: 810 }
-];
-
-function switchPage(page) {
-    const app = document.getElementById('app');
-    window.scrollTo(0, 0);
-    
-    if (page === 'home') {
-        app.innerHTML = renderHome();
-    } else if (page === 'games') {
-        app.innerHTML = renderGames();
-    } else if (page === 'leaderboard') {
-        app.innerHTML = renderLeaderboard();
-    } else if (page === 'profile') {
-        app.innerHTML = renderProfile();
-    } else if (page.startsWith('detail-')) {
-        const gameId = page.split('-')[1];
-        app.innerHTML = renderGameDetail(gameId);
-    }
-}
-
-function renderHome() {
-    return `
-        <div class="relative overflow-hidden rounded-3xl glass-card p-8 md:p-12 mb-10 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="max-w-lg text-center md:text-left">
-                <span class="inline-block px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-bold mb-4 tracking-wider uppercase">✨ Yeni Nesil Indie Arcade</span>
-                <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-4 leading-none">Pick a game.<br><span class="bg-gradient-to-r from-purple-400 via-indigo-300 to-pink-500 bg-clip-text text-transparent">Make it yours.</span></h1>
-                <p class="text-slate-400 text-sm md:text-base mb-8 leading-relaxed">Hızlı eğlence anları için tasarlanmış 10 özgün mini oyun. Tek tıkla oyna, rekorunu kır.</p>
-                <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
-                    <button onclick="switchPage('games')" class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-8 py-4 rounded-2xl shadow-xl shadow-purple-600/30 transition hover:scale-105 active:scale-95">PLAY NOW</button>
-                    <button onclick="switchPage('games')" class="w-full sm:w-auto bg-slate-900/80 hover:bg-slate-800 text-slate-300 font-semibold px-6 py-4 rounded-2xl border border-slate-700/80 transition">Explore Games</button>
-                </div>
-            </div>
-            <div class="w-48 h-48 md:w-64 md:h-64 rounded-3xl bg-gradient-to-tr from-purple-600/30 via-indigo-600/20 to-pink-600/30 border border-purple-500/30 flex items-center justify-center text-7xl shadow-2xl animate-pulse">
-                🕹️
-            </div>
-        </div>
-
-        <div class="mb-12">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-black tracking-wide">Öne Çıkan Oyunlar</h2>
-                <button onclick="switchPage('games')" class="text-sm font-semibold text-purple-400 hover:text-purple-300 transition">Tümünü Gör →</button>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                ${gamesData.slice(0, 3).map(g => `
-                    <div onclick="switchPage('detail-${g.id}')" class="glass-card rounded-3xl p-6 transition cursor-pointer group flex flex-col justify-between">
-                        <div>
-                            <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition shadow-inner">${g.icon}</div>
-                            <span class="text-[11px] font-extrabold text-purple-400 uppercase tracking-widest">${g.cat}</span>
-                            <h3 class="text-xl font-bold mt-1 mb-2 group-hover:text-purple-300 transition">${g.title}</h3>
-                            <p class="text-slate-400 text-xs mb-6 leading-relaxed line-clamp-2">${g.desc}</p>
-                        </div>
-                        <div class="flex items-center justify-between pt-4 border-t border-slate-800/80">
-                            <span class="text-xs text-slate-500">Zorluk: <strong class="text-slate-300">${g.diff}</strong></span>
-                            <span class="text-xs font-bold text-purple-400 group-hover:translate-x-1 transition">Hemen Oyna →</span>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `;
-}
-
-function renderGames() {
-    return `
-        <div class="mb-8">
-            <h1 class="text-4xl font-black mb-2 tracking-tight">Choose Your Game</h1>
-            <p class="text-slate-400 text-sm">Pick your favorite challenge and start playing.</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            ${gamesData.map(g => `
-                <div onclick="switchPage('detail-${g.id}')" class="glass-card rounded-3xl p-6 transition cursor-pointer group flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-start justify-between mb-5">
-                            <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-3xl group-hover:scale-110 transition shadow-inner">${g.icon}</div>
-                            <span class="text-[10px] font-black px-3 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20">${g.cat}</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2 group-hover:text-purple-300 transition">${g.title}</h3>
-                        <p class="text-slate-400 text-xs mb-6 leading-relaxed">${g.desc}</p>
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t border-slate-800/80">
-                        <span class="text-xs text-slate-500">En İyi: <strong class="text-amber-400">${g.score}</strong></span>
-                        <span class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-md shadow-purple-600/20">İncele</span>
-                    </div>
-                </div>
-            `).join('')}
-        </div>
-    `;
-}
-
-function renderGameDetail(id) {
-    const game = gamesData.find(g => g.id === id) || gamesData[0];
-    return `
-        <div class="max-w-2xl mx-auto glass-card rounded-3xl p-8 md:p-10 shadow-2xl animate-fade">
-            <button onclick="switchPage('games')" class="text-xs font-semibold text-slate-400 hover:text-white mb-6 flex items-center gap-1 transition">← Oyunlara Dön</button>
-            
-            <div class="flex items-center gap-5 mb-6">
-                <div class="w-20 h-20 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-5xl shadow-inner">${game.icon}</div>
-                <div>
-                    <span class="text-xs font-extrabold text-purple-400 uppercase tracking-widest">${game.cat} • Zorluk: ${game.diff}</span>
-                    <h1 class="text-3xl font-black mt-1">${game.title}</h1>
-                </div>
-            </div>
-
-            <p class="text-slate-300 text-sm mb-8 leading-relaxed">${game.desc} Bu oyunun oynanış motoru modüler olarak ekleniyor. Hazır olduğunda ilk oyunu bu ekrandan başlatabileceksin!</p>
-
-            <div class="flex gap-4">
-                <button onclick="alert('Modüler oyun motoru sıradaki adımda eklenecektir!')" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl shadow-xl shadow-purple-600/30 transition text-center">PLAY NOW</button>
-                <button onclick="switchPage('games')" class="bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold px-6 py-4 rounded-2xl border border-slate-800 transition">Geri</button>
-            </div>
-        </div>
-    `;
-}
-
-function renderLeaderboard() {
-    return `
-        <div class="mb-8">
-            <h1 class="text-4xl font-black mb-2 tracking-tight">Top Players</h1>
-            <p class="text-slate-400 text-sm">Global sıralama ve kişisel en iyi rekorların.</p>
-        </div>
-        <div class="glass-card rounded-3xl p-6 shadow-xl max-w-2xl mx-auto">
-            <h3 class="font-bold mb-5 text-sm text-purple-400">🏆 Global Liderler Tablosu</h3>
-            <div class="space-y-3">
-                ${[ {r:1, n:'Burcu', s:1420, g:'Potion Panic'}, {r:2, n:'Efe', s:1280, g:'Mirror Escape'}, {r:3, n:'Zeynep', s:1150, g:'Octo Grab'} ].map(l => `
-                    <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-950/60 border border-slate-800/80 text-sm">
-                        <div class="flex items-center gap-4">
-                            <span class="w-6 text-center font-black text-xs text-amber-400">#${l.r}</span>
-                            <span class="font-bold">${l.n}</span>
-                        </div>
-                        <span class="font-black text-purple-400">${l.s} Puan</span>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    `;
-}
-
-function renderProfile() {
-    return `
-        <div class="max-w-2xl mx-auto glass-card rounded-3xl p-8 md:p-10 shadow-2xl animate-fade">
-            <div class="flex items-center gap-5 mb-8 pb-8 border-b border-slate-800/80">
-                <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-600 flex items-center justify-center text-3xl font-black text-white shadow-xl">BU</div>
-                <div>
-                    <h1 class="text-3xl font-black">Burcu Uysal</h1>
-                    <p class="text-purple-400 text-xs font-semibold mt-1">Player • Seviye 14 Arcade Ustası</p>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
 const arcadeGames = [
     { id: 'hyperpulse', title: 'HyperPulse 2084', type: 'rhythm', description: 'Dört şeritte ritmi yakala. Notayı çizgiye geldiğinde doğru tuşla karşıla.', controls: 'A / S / D / F veya dokunmatik şeritler', goal: '25 nota isabeti' },
     { id: 'chrono', title: 'Chrono Rift', type: 'sliding', description: 'Zamanı doğru sıraya getir. Taşları boş kareye kaydırıp 1’den 15’e diz.', controls: 'Ok tuşları veya taşlara tıkla', goal: 'Bulmacayı çöz' },
@@ -215,6 +52,11 @@ function saveBestScore(gameId, score) {
     } catch {
         return score;
     }
+    fetch('/api/scores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gameId, score })
+    }).catch(() => {});
     return scores[gameId];
 }
 
@@ -486,8 +328,23 @@ function mountGamePage() {
     canvas.addEventListener('pointerup', onCanvasPointerUp);
     window.addEventListener('keydown', onGameKeyDown);
     window.addEventListener('keyup', onGameKeyUp);
-    window.addEventListener('blur', () => heldKeys.clear());
+    window.addEventListener('blur', clearHeldKeys);
     drawGame(0);
+}
+
+function clearHeldKeys() {
+    heldKeys.clear();
+}
+
+function unmountGamePage() {
+    cancelAnimationFrame(animationId);
+    window.removeEventListener('keydown', onGameKeyDown);
+    window.removeEventListener('keyup', onGameKeyUp);
+    window.removeEventListener('blur', clearHeldKeys);
+    document.getElementById('arcade-game')?.remove();
+    heldKeys.clear();
+    gameState = undefined;
+    activeGame = undefined;
 }
 
 function buildTouchControls() {
@@ -545,10 +402,11 @@ function finishGame(won, message) {
     if (!gameState || gameState.done) return;
     gameState.done = true;
     gameState.won = won;
-    const best = saveBestScore(activeGame.id, gameState.score);
+    const score = Math.floor(gameState.score);
+    const best = saveBestScore(activeGame.id, score);
     document.getElementById('game-best').textContent = best;
     document.getElementById('game-status').textContent = won ? 'Tamamlandı' : 'Oyun bitti';
-    showGameOverlay(won ? 'GÜZEL OYUN' : 'TEKRAR DENE', won ? 'Başardın!' : 'Oyun bitti', `${message} Skorun: ${gameState.score}`, 'YENİDEN OYNA');
+    showGameOverlay(won ? 'GÜZEL OYUN' : 'TEKRAR DENE', won ? 'Başardın!' : 'Oyun bitti', `${message} Skorun: ${score}`, 'YENİDEN OYNA');
 }
 
 function gameLoop(now) {
@@ -1175,4 +1033,4 @@ function renderLocalLeaderboard() {
     root.innerHTML = `<h2 class="arcade-kicker">SENİN REKORLARIN</h2>${rows.length ? rows.map((game, index) => `<div class="local-score-row"><span>#${index + 1} ${game.title}</span><strong>${game.score.toLocaleString('tr-TR')}</strong></div>`).join('') : '<p>Henüz kayıtlı skorun yok. Bir oyun başlatıp ilk rekorunu oluştur.</p>'}`;
 }
 
-document.addEventListener('DOMContentLoaded', bootPlayora);
+export { arcadeGames, bootPlayora, createGameArtwork, unmountGamePage };
